@@ -1,6 +1,8 @@
 <script lang="ts">
     import JsonDumper from "$lib/components/JsonDumper.svelte";
     import { get_kanaka_relations_by_xrefid } from "$lib/graphql-access";
+    import { transformKanakaRelationsToForceGraph } from "$lib/transforms";
+    import { writable } from "svelte/store";
 
     let resultMethod: string = 'graphql-response';
 
@@ -8,6 +10,9 @@
         // dummy: 'default data',
         // powerlevel: 433,
     };
+
+    // svelte store / observable
+    const forceGraphDataNodeRelationsResult = writable({});
 
     function submitHandler(e) {
         console.log("submitHandler()");
@@ -31,8 +36,11 @@
         const xref_id = params?.searchText;
 
         const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
-
         graphqlResult = result;
+
+        const fgResult = transformKanakaRelationsToForceGraph(result);
+        forceGraphDataNodeRelationsResult.set(fgResult);
+
     }
 </script>
 
@@ -64,7 +72,7 @@
 {#if (resultMethod === 'graphql-response')}
 <JsonDumper jsonObject={graphqlResult} />
 {:else if (resultMethod === 'force-graph-data')}
-not implemented
+<JsonDumper jsonObject={$forceGraphDataNodeRelationsResult} />
 {:else if (resultMethod === 'force-graph-vis')}
 not implemented
 {/if}

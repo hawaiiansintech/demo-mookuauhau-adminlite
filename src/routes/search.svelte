@@ -1,5 +1,6 @@
 <script lang="ts">
-    import JsonDumper from "$lib/components/JsonDumper.svelte";
+    import ForceGraphVis from "$lib/components/ForceGraphVis.svelte";
+import JsonDumper from "$lib/components/JsonDumper.svelte";
     import { get_kanaka_relations_by_xrefid } from "$lib/graphql-access";
     import { transformKanakaRelationsToForceGraph } from "$lib/transforms";
     import { writable } from "svelte/store";
@@ -42,6 +43,11 @@
         forceGraphDataNodeRelationsResult.set(fgResult);
 
     }
+
+    function onLoad() {
+        
+    }
+
 </script>
 
 
@@ -74,5 +80,5 @@
 {:else if (resultMethod === 'force-graph-data')}
 <JsonDumper jsonObject={$forceGraphDataNodeRelationsResult} />
 {:else if (resultMethod === 'force-graph-vis')}
-not implemented
+<ForceGraphVis graph={$forceGraphDataNodeRelationsResult} ></ForceGraphVis>
 {/if}

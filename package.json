@@ -26,6 +26,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"force-graph": "^1.42.10",
 		"graphql-request": "^4.3.0"
 	}
 }

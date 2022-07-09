@@ -56,7 +56,7 @@ import JsonDumper from "$lib/components/JsonDumper.svelte";
 <form method="get" on:submit|preventDefault={submitHandler}>
     <div>
         <label for="searchText">search text</label>
-        <input type="text" name="searchText" value="@I164@" />
+        <input type="text" name="searchText" value="@I321@" />
     </div>
 
     <div>

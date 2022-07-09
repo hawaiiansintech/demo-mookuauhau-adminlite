@@ -52,3 +52,12 @@ export async function render() {
 </script>
 
 <div id="forceGraphVis"></div>
+
+<style>
+    #forceGraphVis {
+        border-style: solid;
+        border-color: gray;
+        display: flex;
+        width:auto;
+    }
+</style>

@@ -87,3 +87,5 @@
 {:else if (resultMethod === 'force-graph-vis')}
 <ForceGraphVis graph={forceGraphDataNodeRelationsResult} loadNode={loadNodeIntoExistingGraph}></ForceGraphVis>
 {/if}
+
+<div>Note: force-graph data is updatable by the ForceGraph object as well as updatable loading additional node queries. </div>

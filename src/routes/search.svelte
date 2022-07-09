@@ -2,8 +2,8 @@
     import ForceGraphVis from "$lib/components/ForceGraphVis.svelte";
     import JsonDumper from "$lib/components/JsonDumper.svelte";
     import { get_kanaka_relations_by_xrefid } from "$lib/graphql-access";
-    import { transformKanakaRelationsToForceGraph } from "$lib/transforms";
-    import { writable } from "svelte/store";
+    import { initialTransformKanakaRelationsToForceGraph, transformKanakaRelationsToForceGraph } from "$lib/transforms";
+    import { get, writable } from "svelte/store";
 
     let resultMethod: string = 'graphql-response';
 
@@ -13,7 +13,7 @@
     };
 
     // svelte store / observable
-    const forceGraphDataNodeRelationsResult = writable({});
+    const forceGraphDataNodeRelationsResult: { [key: string]: any; } = writable({ nodes: [], links: [] });
 
     function submitHandler(e) {
         console.log("submitHandler()");
@@ -39,10 +39,30 @@
         const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
         graphqlResult = result;
 
-        const fgResult = transformKanakaRelationsToForceGraph(result);
+        const fgResult = initialTransformKanakaRelationsToForceGraph(result);
         forceGraphDataNodeRelationsResult.set(fgResult);
 
     }
+
+    async function loadNode( xref_id: string ) {
+        console.log(`loadNode(${xref_id})`);
+        const role = 'public';
+        const jwt_token = '';
+
+        const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
+        graphqlResult = result;
+
+        const priorFG = get(forceGraphDataNodeRelationsResult);
+        const fgResult = transformKanakaRelationsToForceGraph(result, priorFG);
+        forceGraphDataNodeRelationsResult.set(fgResult);
+
+    }
+
+    // function nodeClickHandler (node, event) {
+    //     console.log(`parent onNodeClick( node, event )`);
+    //     console.log("node: ", node);
+    //     console.log("event: ", event);
+    // };
 
     function onLoad() {
         
@@ -80,5 +100,5 @@
 {:else if (resultMethod === 'force-graph-data')}
 <JsonDumper jsonObject={$forceGraphDataNodeRelationsResult} />
 {:else if (resultMethod === 'force-graph-vis')}
-<ForceGraphVis graph={$forceGraphDataNodeRelationsResult} ></ForceGraphVis>
+<ForceGraphVis graph={$forceGraphDataNodeRelationsResult} loadNode={loadNode}></ForceGraphVis>
 {/if}

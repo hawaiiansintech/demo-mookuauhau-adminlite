@@ -11,13 +11,8 @@ export const nodeColorByType: {[key: string]: any} = {
     'ohana': 'orange',
 }
 
-export function transformKanakaRelationsToForceGraph(data: {[key: string]: any}) {
+export function transformKanakaRelationsToForceGraph(data: {[key: string]: any}, output: {[key: string]: any}) {
     console.log("transformKanakaRelationsToForceGraph()");
-
-    let output: {[key: string]: any} = {
-        "nodes": [],
-        "links": []
-    }
 
     if(data?.kanaka) {
         console.log("data.kanaka: ", data?.kanaka);
@@ -113,6 +108,19 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any})
         });
     }
     
+    return output;
+}
+
+export function initialTransformKanakaRelationsToForceGraph(data: {[key: string]: any}) {
+    console.log("initialTransformKanakaRelationsToForceGraph()");
+
+    let output: {[key: string]: any} = {
+        "nodes": [],
+        "links": []
+    }
+
+    transformKanakaRelationsToForceGraph(data, output);
+
     return output;
 }
 
@@ -329,3 +337,4 @@ function pushKamalii(output, ohana, nakamalii) {
     pushLink(output, ohana.xref_id, nakamalii.kanaka.xref_id, 'child');
 
 }
+

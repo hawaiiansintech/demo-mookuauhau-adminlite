@@ -1,6 +1,6 @@
 <script lang="ts">
     import ForceGraphVis from "$lib/components/ForceGraphVis.svelte";
-import JsonDumper from "$lib/components/JsonDumper.svelte";
+    import JsonDumper from "$lib/components/JsonDumper.svelte";
     import { get_kanaka_relations_by_xrefid } from "$lib/graphql-access";
     import { transformKanakaRelationsToForceGraph } from "$lib/transforms";
     import { writable } from "svelte/store";
@@ -56,7 +56,7 @@ import JsonDumper from "$lib/components/JsonDumper.svelte";
 <form method="get" on:submit|preventDefault={submitHandler}>
     <div>
         <label for="searchText">search text</label>
-        <input type="text" name="searchText" value="@I321@" />
+        <input type="text" name="searchText" value="@I654@" />
     </div>
 
     <div>

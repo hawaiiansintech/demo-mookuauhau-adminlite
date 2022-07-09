@@ -65,10 +65,11 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any})
 
                 // makuakane means this kanaka is a father in an ʻohana relationship
                 if(kanaka?.makuakane) {
-                    console.log(`has kanaka.makuakane`);
+                    console.log(`has kanaka.makuakane `, kanaka?.makuakane);
                     kanaka.makuakane.forEach(mke => {
                         // has ohana
                         pushOhana(output, mke);
+                        pushLink(output, mke.xref_id, kanaka.xref_id);
 
                         if(mke?.wahine) {
                             // has spouse
@@ -101,6 +102,8 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any})
                 // namakua is a list of makua/parents this kanaka is a child of (other ʻohana relationships)
 
                 if(kanaka?.namakua) {
+                    // pushLink(output, kanaka.namakua.ohana.xref_id, kanaka.xref_id);
+
                     pushNamakua(output, kanaka, kanaka.namakua);
 
                     // push link if not exists
@@ -232,6 +235,7 @@ function pushMakua(output, kanaka, makua) {
 
 function pushKanaka(output, kanaka) {
     console.log(`pushKanaka(output, kanaka ${kanaka?.xref_id})`);
+    console.log("kanaka: ", kanaka);
     // mutates output
 
     if(!kanaka) { return; }

@@ -11,7 +11,13 @@ export const nodeColorByType: {[key: string]: any} = {
     'ohana': 'orange',
 }
 
-export function transformKanakaRelationsToForceGraph(data: {[key: string]: any}, output: {[key: string]: any}, Graph) {
+export const linkColorByType: {[key: string]: any} = {
+    'child': 'green',
+    'K': 'blue',
+    'W': 'pink',
+}
+
+export function transformKanakaRelationsToForceGraph(data: {[key: string]: any}, nodeRelations: {[key: string]: any}) {
     console.log("transformKanakaRelationsToForceGraph()");
 
     if(data?.kanaka) {
@@ -20,22 +26,22 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any},
 
             if(kanaka?.xref_id) {
                 // push kanaka
-                pushKanaka(output, kanaka);
+                pushKanaka(nodeRelations, kanaka);
 
                 // makuahine means this kanaka is a mother in an ʻohana relationship
                 if(kanaka?.makuahine) {
                     console.log(`has kanaka.makuahine `, kanaka?.makuahine);
                     kanaka.makuahine.forEach(mke => {
                         // has ohana
-                        pushOhana(output, mke);
-                        pushLink(output, mke.xref_id, kanaka.xref_id, 'W');
+                        pushOhana(nodeRelations, mke);
+                        pushLink(nodeRelations, mke.xref_id, kanaka.xref_id, 'W');
 
                         if(mke?.kane) {
                             // has spouse
-                            pushMakua(output, kanaka, mke);
+                            pushMakua(nodeRelations, kanaka, mke);
 
-                            pushKanaka(output, mke.kane);
-                            pushLink(output, mke.xref_id, mke.kane.xref_id, 'K');
+                            pushKanaka(nodeRelations, mke.kane);
+                            pushLink(nodeRelations, mke.xref_id, mke.kane.xref_id, 'K');
                         }
                         else {
                             console.log("no mke.kane");
@@ -45,7 +51,7 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any},
                             // has kids
                             // nakamalii is a list of children of this kanaka (ʻohana relationship)
                             mke.nakamalii.forEach(nki => {
-                                pushKamalii(output, mke, nki);
+                                pushKamalii(nodeRelations, mke, nki);
                             });
                         }
                         else {
@@ -62,15 +68,15 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any},
                     console.log(`has kanaka.makuakane `, kanaka?.makuakane);
                     kanaka.makuakane.forEach(mke => {
                         // has ohana
-                        pushOhana(output, mke);
-                        pushLink(output, mke.xref_id, kanaka.xref_id, 'K');
+                        pushOhana(nodeRelations, mke);
+                        pushLink(nodeRelations, mke.xref_id, kanaka.xref_id, 'K');
 
                         if(mke?.wahine) {
                             // has spouse
-                            pushMakua(output, kanaka, mke);
+                            pushMakua(nodeRelations, kanaka, mke);
 
-                            pushKanaka(output, mke.wahine);
-                            pushLink(output, mke.xref_id, mke.wahine.xref_id, 'W');
+                            pushKanaka(nodeRelations, mke.wahine);
+                            pushLink(nodeRelations, mke.xref_id, mke.wahine.xref_id, 'W');
                         }
                         else {
                             console.log("no mke.wahine");
@@ -80,7 +86,7 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any},
                             // has kids
                             // nakamalii is a list of children of this kanaka (ʻohana relationship)
                             mke.nakamalii.forEach(nki => {
-                                pushKamalii(output, mke, nki);
+                                pushKamalii(nodeRelations, mke, nki);
                             });
                         }
                         else {
@@ -95,37 +101,37 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any},
                 // namakua is a list of makua/parents this kanaka is a child of (other ʻohana relationships)
 
                 if(kanaka?.namakua) {
-                    // pushLink(output, kanaka.namakua.ohana.xref_id, kanaka.xref_id);
+                    // pushLink(nodeRelations, kanaka.namakua.ohana.xref_id, kanaka.xref_id);
 
-                    pushNamakua(output, kanaka, kanaka.namakua);
+                    pushNamakua(nodeRelations, kanaka, kanaka.namakua);
 
                     // push link if not exists
                     // ohana will point to keikis
-                    // pushLink(output, namakua.ohana.xref_id, kanaka.xref_id);
+                    // pushLink(nodeRelations, namakua.ohana.xref_id, kanaka.xref_id);
                 }
 
             }
         });
     }
     
-    return output;
+    return nodeRelations;
 }
 
-export function initialTransformKanakaRelationsToForceGraph(data: {[key: string]: any}, Graph) {
+export function initialTransformKanakaRelationsToForceGraph(data: {[key: string]: any}) {
     console.log("initialTransformKanakaRelationsToForceGraph()");
 
-    let output: {[key: string]: any} = {
+    let nodeRelations: {[key: string]: any} = {
         "nodes": [],
         "links": []
     }
 
-    transformKanakaRelationsToForceGraph(data, output, Graph);
+    transformKanakaRelationsToForceGraph(data, nodeRelations);
 
-    return output;
+    return nodeRelations;
 }
 
-function pushNamakua(output, kanaka, namakua) {
-    console.log(`pushNamakua(output, kanaka ${kanaka.xref_id}, namakua`);
+function pushNamakua(nodeRelations, kanaka, namakua) {
+    console.log(`pushNamakua(nodeRelations, kanaka ${kanaka.xref_id}, namakua`);
 
     if(!namakua) { return }
 
@@ -136,20 +142,20 @@ function pushNamakua(output, kanaka, namakua) {
         // }
         // else {
         //     console.log("n", n);
-        //     pushOhana(output, n);
+        //     pushOhana(nodeRelations, n);
 
         //     // ohana will point to keikis
-        //     pushLink(output, n.xref_id, kanaka.xref_id);
+        //     pushLink(nodeRelations, n.xref_id, kanaka.xref_id);
         // }
         if(!n?.ohana) {
             console.log("[namakua] n.ohana not exists");
         }
         else {
             console.log("n.ohana", n.ohana);
-            pushOhana(output, n.ohana);
+            pushOhana(nodeRelations, n.ohana);
 
             // ohana will point to keikis
-            pushLink(output, n.ohana.xref_id, kanaka.xref_id, 'child');
+            pushLink(nodeRelations, n.ohana.xref_id, kanaka.xref_id, 'child');
         }
 
         // makuakane and makuahine - parents
@@ -158,34 +164,34 @@ function pushNamakua(output, kanaka, namakua) {
         }
         else {
             console.log("n.ohana.kane", n.ohana.kane);
-            pushKanaka(output, n.ohana.kane);
+            pushKanaka(nodeRelations, n.ohana.kane);
 
-            pushOhana(output, n.ohana);
+            pushOhana(nodeRelations, n.ohana);
 
             // ohana will point to parent kanaka
-            pushLink(output, n.ohana.xref_id, n.ohana.kane.xref_id, 'K');
+            pushLink(nodeRelations, n.ohana.xref_id, n.ohana.kane.xref_id, 'K');
         }
         if(!n?.ohana?.wahine) {
             console.log("[makua] n.ohana.wahine not exists");
         }
         else {
             console.log("n.ohana.wahine", n.ohana.wahine);
-            pushKanaka(output, n.ohana.wahine);
+            pushKanaka(nodeRelations, n.ohana.wahine);
 
-            pushOhana(output, n.ohana);
+            pushOhana(nodeRelations, n.ohana);
 
             // ohana will point to parest kanaka
-            pushLink(output, n.ohana.xref_id, n.ohana.wahine.xref_id, 'W');
+            pushLink(nodeRelations, n.ohana.xref_id, n.ohana.wahine.xref_id, 'W');
         }
 
     });
 
 }
 
-function pushMakua(output, kanaka, makua) {
-    console.log(`pushMakua(output, kanaka ${kanaka.xref_id}, makua`);
+function pushMakua(nodeRelations, kanaka, makua) {
+    console.log(`pushMakua(nodeRelations, kanaka ${kanaka.xref_id}, makua`);
 
-    // mutates output
+    // mutates nodeRelations
 
     if(!makua) { return }
 
@@ -199,56 +205,56 @@ function pushMakua(output, kanaka, makua) {
         // }
         // else {
         //     console.log("m.ohana", m.ohana);
-        //     pushOhana(output, m.ohana);
+        //     pushOhana(nodeRelations, m.ohana);
 
         //     // ohana will point to keikis
-        //     pushLink(output, ohana.xref_id, kanaka.xref_id);
+        //     pushLink(nodeRelations, ohana.xref_id, kanaka.xref_id);
         // }
         if(!m) {
             console.log("[makua] m not exists");
         }
         else {
             console.log("m", m);
-            pushOhana(output, m);
+            pushOhana(nodeRelations, m);
 
             // ohana will point to keikis
             m.nakamalii.forEach(n => {
-                pushLink(output, m.xref_id, n.kanaka.xref_id, 'child');
+                pushLink(nodeRelations, m.xref_id, n.kanaka.xref_id, 'child');
             });
         }
 
         // push spouse
-        if(m?.kane && !output.nodes.some(node => node.id === m?.kane?.xref_id)) {
-            pushKanaka(output, m?.kane);
+        if(m?.kane && !nodeRelations.nodes.some(node => node.id === m?.kane?.xref_id)) {
+            pushKanaka(nodeRelations, m?.kane);
 
-            pushOhana(output, m);
+            pushOhana(nodeRelations, m);
 
             // push link if not exists
-            pushLink(output, m.xref_id, m.kane.xref_id, 'K');
+            pushLink(nodeRelations, m.xref_id, m.kane.xref_id, 'K');
         }
-        if(m?.wahine && !output.nodes.some(node => node.id === m?.wahine?.xref_id)) {
-            pushKanaka(output, m?.wahine);
+        if(m?.wahine && !nodeRelations.nodes.some(node => node.id === m?.wahine?.xref_id)) {
+            pushKanaka(nodeRelations, m?.wahine);
 
-            pushOhana(output, m);
+            pushOhana(nodeRelations, m);
 
             // push link if not exists
-            pushLink(output, m.xref_id, m.wahine.xref_id, 'W');
+            pushLink(nodeRelations, m.xref_id, m.wahine.xref_id, 'W');
         }
 
     // });
    
 }
 
-function pushKanaka(output, kanaka) {
-    console.log(`pushKanaka(output, kanaka ${kanaka?.xref_id})`);
+function pushKanaka(nodeRelations, kanaka) {
+    console.log(`pushKanaka(nodeRelations, kanaka ${kanaka?.xref_id})`);
     console.log("kanaka: ", kanaka);
-    // mutates output
+    // mutates nodeRelations
 
     if(!kanaka) { return; }
 
-    if(!output.nodes.some(node => node.id === kanaka.xref_id)) {
-        const { nodes, links } = output;
-        output.nodes = [...nodes, {
+    if(!nodeRelations.nodes.some(node => node.id === kanaka.xref_id)) {
+        const { nodes, links } = nodeRelations;
+        nodeRelations.nodes = [...nodes, {
             id: kanaka.xref_id,
             name: kanaka?.name || 'kanaka',
             val: nodeValByType.kanaka,
@@ -260,8 +266,8 @@ function pushKanaka(output, kanaka) {
     }
 }
 
-function pushOhana(output, ohana) {
-    console.log(`pushOhana(output, ohana ${ohana?.xref_id})`);
+function pushOhana(nodeRelations, ohana) {
+    console.log(`pushOhana(nodeRelations, ohana ${ohana?.xref_id})`);
     if(!ohana) {
         console.log("skip ohana");
         return;
@@ -270,11 +276,11 @@ function pushOhana(output, ohana) {
         console.log("missing ohana.xref_id");
         return;
     }
-    // mutates output
+    // mutates nodeRelations
     // push ohana if not exists
-    if(!output.nodes.some(node => node.id === ohana.xref_id)) {
-        const { nodes, links } = output;
-        output.nodes = [...nodes, {
+    if(!nodeRelations.nodes.some(node => node.id === ohana.xref_id)) {
+        const { nodes, links } = nodeRelations;
+        nodeRelations.nodes = [...nodes, {
             id: ohana.xref_id,
             name: ohana?.name || 'ohana',
             val: nodeValByType.ohana,
@@ -286,8 +292,8 @@ function pushOhana(output, ohana) {
     }
 }
 
-function pushLink(output, sourceId: string, targetId: string, label?: string|undefined) {
-    console.log(`pushLink(output, ${sourceId}, ${targetId}, ${label})`);
+function pushLink(nodeRelations, sourceId: string, targetId: string, label?: string|undefined) {
+    console.log(`pushLink(nodeRelations, ${sourceId}, ${targetId}, ${label})`);
     if(!sourceId) {
         console.log("missing sourceId");
         return;
@@ -296,9 +302,9 @@ function pushLink(output, sourceId: string, targetId: string, label?: string|und
         console.log("missing targetId");
         return;
     }
-    // mutates output
+    // mutates nodeRelations
     // push link if not exists
-    if(!output.links.some(node => 
+    if(!nodeRelations.links.some(node => 
             node.source === sourceId
             && node.target === targetId )) {
         let link: {[key: string]: any} = {
@@ -306,14 +312,13 @@ function pushLink(output, sourceId: string, targetId: string, label?: string|und
             source: sourceId,
             target: targetId,
         };
-        if(label) { link.name = label }
+        if(label) { 
+            link.name = label;
+            link.color = linkColorByType[label];
+        }
 
-        if(label === 'child') { link.color = 'green' }
-        if(label === 'K') { link.color = 'blue' }
-        if(label === 'W') { link.color = 'pink' }
-
-        const { nodes, links } = output;
-        output.links = [...links, link];
+        const { nodes, links } = nodeRelations;
+        nodeRelations.links = [...links, link];
         
     }
     else {
@@ -321,7 +326,7 @@ function pushLink(output, sourceId: string, targetId: string, label?: string|und
     }
 }
 
-function pushKamalii(output, ohana, nakamalii) {
+function pushKamalii(nodeRelations, ohana, nakamalii) {
     console.log("pushKamalii()");
     // push ohana if not exists
     
@@ -330,13 +335,13 @@ function pushKamalii(output, ohana, nakamalii) {
     }
     console.log("[kamalii] this is nakamalii: ", nakamalii);
     
-    pushOhana(output, ohana);
+    pushOhana(nodeRelations, ohana);
 
-    pushKanaka(output, nakamalii.kanaka);
+    pushKanaka(nodeRelations, nakamalii.kanaka);
 
     // push link if not exists
     // ohana will point to keikis
-    pushLink(output, ohana.xref_id, nakamalii.kanaka.xref_id, 'child');
+    pushLink(nodeRelations, ohana.xref_id, nakamalii.kanaka.xref_id, 'child');
 
 }
 

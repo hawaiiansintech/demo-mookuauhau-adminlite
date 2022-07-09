@@ -3,17 +3,10 @@
     import JsonDumper from "$lib/components/JsonDumper.svelte";
     import { get_kanaka_relations_by_xrefid } from "$lib/graphql-access";
     import { initialTransformKanakaRelationsToForceGraph, transformKanakaRelationsToForceGraph } from "$lib/transforms";
-    import { get, writable } from "svelte/store";
 
     let resultMethod: string = 'graphql-response';
 
-    let graphqlResult = {
-        // dummy: 'default data',
-        // powerlevel: 433,
-    };
-
-    // svelte store / observable
-    // const forceGraphDataNodeRelationsResult: { [key: string]: any; } = writable({ nodes: [], links: [] });
+    let graphqlResult = {};
 
     // simple in-memory object
     let forceGraphDataNodeRelationsResult: { [key: string]: any; };
@@ -47,26 +40,17 @@
 
     }
 
-    async function loadNode( xref_id: string ) {
-        console.log(`loadNode(${xref_id})`);
+    async function loadNodeIntoExistingGraph( xref_id: string ) {
+        console.log(`loadNodeIntoExistingGraph(${xref_id})`);
         const role = 'public';
         const jwt_token = '';
 
         const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
         graphqlResult = result;
 
-        const fgResult = transformKanakaRelationsToForceGraph(result, forceGraphDataNodeRelationsResult);
+        // mutates forceGraphDataNodeRelationsResult
+        transformKanakaRelationsToForceGraph(result, forceGraphDataNodeRelationsResult);
 
-    }
-
-    // function nodeClickHandler (node, event) {
-    //     console.log(`parent onNodeClick( node, event )`);
-    //     console.log("node: ", node);
-    //     console.log("event: ", event);
-    // };
-
-    function onLoad() {
-        
     }
 
 </script>
@@ -101,5 +85,5 @@
 {:else if (resultMethod === 'force-graph-data')}
 <JsonDumper jsonObject={forceGraphDataNodeRelationsResult} />
 {:else if (resultMethod === 'force-graph-vis')}
-<ForceGraphVis graph={forceGraphDataNodeRelationsResult} loadNode={loadNode}></ForceGraphVis>
+<ForceGraphVis graph={forceGraphDataNodeRelationsResult} loadNode={loadNodeIntoExistingGraph}></ForceGraphVis>
 {/if}

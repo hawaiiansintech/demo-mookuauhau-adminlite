@@ -9,16 +9,16 @@ export let loadNode: Function = () => {
     console.log("loadNode() noop");
 };
 
-let forceGraph;
+let Graph;
 
 export let graph = writable({ nodes: [], links: [] });
-export let nodeClickHandler: Function = async (node, event, forceGraph, loadNode) => {
+export let nodeClickHandler: Function = async (node, event, Graph, loadNode) => {
     console.log(`onNodeClick( node, event )`);
     console.log("node: ", node);
     console.log("event: ", event);
-    forceGraph.pauseAnimation();
+    // forceGraph.autoPauseRedraw(false);
     await loadNode(node.id);
-    forceGraph.resumeAnimation();
+    // forceGraph.resumeAnimation();
 };
 
 $: () => {
@@ -29,8 +29,8 @@ $: () => {
 onMount(async () => {
     if(browser) {
         const { default: ForceGraph } = await import('force-graph');
-        forceGraph = ForceGraph()
-            .onNodeClick((node, event) => nodeClickHandler(node, event, forceGraph, loadNode));
+        Graph = ForceGraph()
+            .onNodeClick((node, event) => nodeClickHandler(node, event, Graph, loadNode));
 
         if(document.getElementById('forceGraphVis')) {
             render(graph);
@@ -46,7 +46,7 @@ async function render(graph) {
     const domEl = document.getElementById('forceGraphVis');
     console.log("domEl: ", domEl);
     if(domEl !== null) {
-        forceGraph(domEl).graphData(graph);
+        Graph(domEl).graphData(graph);
     }
 }
 

@@ -11,7 +11,7 @@ export const nodeColorByType: {[key: string]: any} = {
     'ohana': 'orange',
 }
 
-export function transformKanakaRelationsToForceGraph(data: {[key: string]: any}, output: {[key: string]: any}) {
+export function transformKanakaRelationsToForceGraph(data: {[key: string]: any}, output: {[key: string]: any}, Graph) {
     console.log("transformKanakaRelationsToForceGraph()");
 
     if(data?.kanaka) {
@@ -111,7 +111,7 @@ export function transformKanakaRelationsToForceGraph(data: {[key: string]: any},
     return output;
 }
 
-export function initialTransformKanakaRelationsToForceGraph(data: {[key: string]: any}) {
+export function initialTransformKanakaRelationsToForceGraph(data: {[key: string]: any}, Graph) {
     console.log("initialTransformKanakaRelationsToForceGraph()");
 
     let output: {[key: string]: any} = {
@@ -119,7 +119,7 @@ export function initialTransformKanakaRelationsToForceGraph(data: {[key: string]
         "links": []
     }
 
-    transformKanakaRelationsToForceGraph(data, output);
+    transformKanakaRelationsToForceGraph(data, output, Graph);
 
     return output;
 }
@@ -247,12 +247,13 @@ function pushKanaka(output, kanaka) {
     if(!kanaka) { return; }
 
     if(!output.nodes.some(node => node.id === kanaka.xref_id)) {
-        output.nodes.push({
+        const { nodes, links } = output;
+        output.nodes = [...nodes, {
             id: kanaka.xref_id,
             name: kanaka?.name || 'kanaka',
             val: nodeValByType.kanaka,
             color: nodeColorByType.kanaka,
-        });
+        }];
     }
     else {
         console.log(`node kanaka.xref_id ${kanaka.xref_id} already exists [noop]`);
@@ -272,12 +273,13 @@ function pushOhana(output, ohana) {
     // mutates output
     // push ohana if not exists
     if(!output.nodes.some(node => node.id === ohana.xref_id)) {
-        output.nodes.push({
+        const { nodes, links } = output;
+        output.nodes = [...nodes, {
             id: ohana.xref_id,
             name: ohana?.name || 'ohana',
             val: nodeValByType.ohana,
             color: nodeColorByType.ohana,
-        });
+        }];
     }
     else {
         console.log(`node ohana.xref_id ${ohana.xref_id} already exists [noop]`);
@@ -310,8 +312,8 @@ function pushLink(output, sourceId: string, targetId: string, label?: string|und
         if(label === 'K') { link.color = 'blue' }
         if(label === 'W') { link.color = 'pink' }
 
-
-        output.links.push(link);
+        const { nodes, links } = output;
+        output.links = [...links, link];
         
     }
     else {

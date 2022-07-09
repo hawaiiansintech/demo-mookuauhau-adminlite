@@ -13,7 +13,10 @@
     };
 
     // svelte store / observable
-    const forceGraphDataNodeRelationsResult: { [key: string]: any; } = writable({ nodes: [], links: [] });
+    // const forceGraphDataNodeRelationsResult: { [key: string]: any; } = writable({ nodes: [], links: [] });
+
+    // simple in-memory object
+    let forceGraphDataNodeRelationsResult: { [key: string]: any; };
 
     function submitHandler(e) {
         console.log("submitHandler()");
@@ -40,7 +43,7 @@
         graphqlResult = result;
 
         const fgResult = initialTransformKanakaRelationsToForceGraph(result);
-        forceGraphDataNodeRelationsResult.set(fgResult);
+        forceGraphDataNodeRelationsResult = fgResult;
 
     }
 
@@ -52,9 +55,7 @@
         const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
         graphqlResult = result;
 
-        const priorFG = get(forceGraphDataNodeRelationsResult);
-        const fgResult = transformKanakaRelationsToForceGraph(result, priorFG);
-        forceGraphDataNodeRelationsResult.set(fgResult);
+        const fgResult = transformKanakaRelationsToForceGraph(result, forceGraphDataNodeRelationsResult);
 
     }
 
@@ -98,7 +99,7 @@
 {#if (resultMethod === 'graphql-response')}
 <JsonDumper jsonObject={graphqlResult} />
 {:else if (resultMethod === 'force-graph-data')}
-<JsonDumper jsonObject={$forceGraphDataNodeRelationsResult} />
+<JsonDumper jsonObject={forceGraphDataNodeRelationsResult} />
 {:else if (resultMethod === 'force-graph-vis')}
-<ForceGraphVis graph={$forceGraphDataNodeRelationsResult} loadNode={loadNode}></ForceGraphVis>
+<ForceGraphVis graph={forceGraphDataNodeRelationsResult} loadNode={loadNode}></ForceGraphVis>
 {/if}

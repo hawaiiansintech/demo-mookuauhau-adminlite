@@ -9,16 +9,19 @@ export let loadNode: Function = () => {
     console.log("loadNode() noop");
 };
 
-let Graph;
+let forceGraph;
 
+// entire nodes/links graph is a svelte store / observable
 export let graph = writable({ nodes: [], links: [] });
-export let nodeClickHandler: Function = async (node, event, Graph, loadNode) => {
+
+export let nodeClickHandler: Function = async (node, event, forceGraph, loadNode) => {
     console.log(`onNodeClick( node, event )`);
     console.log("node: ", node);
     console.log("event: ", event);
-    // forceGraph.autoPauseRedraw(false);
     await loadNode(node.id);
-    // forceGraph.resumeAnimation();
+
+    // force re-render 
+    render();
 };
 
 $: () => {
@@ -29,11 +32,11 @@ $: () => {
 onMount(async () => {
     if(browser) {
         const { default: ForceGraph } = await import('force-graph');
-        Graph = ForceGraph()
-            .onNodeClick((node, event) => nodeClickHandler(node, event, Graph, loadNode));
+        forceGraph = ForceGraph()
+            .onNodeClick((node, event) => nodeClickHandler(node, event, forceGraph, loadNode));
 
         if(document.getElementById('forceGraphVis')) {
-            render(graph);
+            render();
         }
         else {
             console.log("document.getElementById('forceGraphVis') not exists");
@@ -41,12 +44,12 @@ onMount(async () => {
     }
 });
 
-async function render(graph) {
-
+export async function render() {
+    console.log("forceGraphVis render()");
     const domEl = document.getElementById('forceGraphVis');
     console.log("domEl: ", domEl);
     if(domEl !== null) {
-        Graph(domEl).graphData(graph);
+        forceGraph(domEl).graphData(graph);
     }
 }
 

@@ -6,10 +6,12 @@ import { isSignedIn, jwt_token, user } from "$lib/nhost";
 
 {#if $isSignedIn && $user}
 <div>Aloha {$user.displayName}</div>
-<div class="truncate" style="width: 200px;"> | jwt: {$jwt_token}</div>
-
 {:else}
 <div>Aloha anonymous | <a href="/login">Login</a></div>
+{/if}
+
+{#if $jwt_token}
+<div class="truncate" style="width: 200px;"> | jwt: {$jwt_token}</div>
 {/if}
 
 </div>

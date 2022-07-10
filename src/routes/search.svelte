@@ -2,7 +2,11 @@
     import ForceGraphVis from "$lib/components/ForceGraphVis.svelte";
     import JsonDumper from "$lib/components/JsonDumper.svelte";
     import { get_kanaka_relations_by_xrefid } from "$lib/graphql-access";
+    import { jwt_token } from "$lib/nhost";
     import { initialTransformKanakaRelationsToForceGraph, transformKanakaRelationsToForceGraph } from "$lib/transforms";
+    import { get } from "svelte/store";
+
+    let message = '';
 
     let resultMethod: string = 'graphql-response';
 
@@ -27,25 +31,37 @@
     }
 
     async function getResult(params: {[key: string]: any} ) {
-        const role = 'public';
-        const jwt_token = '';
+        console.log(`getResult()`);
+        let role = 'public';
+        const jwt = get(jwt_token);
+        if(jwt) {
+            role = 'user';
+        }
 
         const xref_id = params?.searchText;
 
-        const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
-        graphqlResult = result;
+        try {
+            const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt);
+            graphqlResult = result;
 
-        const fgResult = initialTransformKanakaRelationsToForceGraph(result);
-        forceGraphDataNodeRelationsResult = fgResult;
-
+            const fgResult = initialTransformKanakaRelationsToForceGraph(result);
+            forceGraphDataNodeRelationsResult = fgResult;
+        }
+        catch(error) {
+            message = error?.message;
+        }
+        
     }
 
     async function loadNodeIntoExistingGraph( xref_id: string ) {
         console.log(`loadNodeIntoExistingGraph(${xref_id})`);
-        const role = 'public';
-        const jwt_token = '';
+        let role = 'public';
+        const jwt = get(jwt_token);
+        if(jwt) {
+            role = 'user';
+        }
 
-        const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt_token);
+        const result = await get_kanaka_relations_by_xrefid(xref_id, role, jwt);
         graphqlResult = result;
 
         // mutates forceGraphDataNodeRelationsResult
@@ -78,6 +94,8 @@
     </div>
 
 </form>
+
+<div style="color:red">{message}</div>
 
 <h2>Results [{resultMethod}]</h2>
 {#if (resultMethod === 'graphql-response')}

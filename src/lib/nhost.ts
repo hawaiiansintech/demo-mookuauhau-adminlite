@@ -1,7 +1,7 @@
 // nhost client
 
 import { NhostClient, type NhostClientConstructorParams } from "@nhost/nhost-js";
-import { writable } from "svelte/store";
+import { writable, type Writable } from "svelte/store";
 
 export const VITE_NHOST_BACKEND_URL = import.meta.env.VITE_NHOST_BACKEND_URL as string;
 
@@ -16,10 +16,26 @@ export const isSignedIn = writable(null);
 export const user = writable(null);
 export const jwt_token = writable('');
 
+// claims / roles
+export const claimUserId: Writable<string|undefined> = writable('');
+export const claimRole: Writable<string|undefined> = writable('');
+export const claimRoleDefault: Writable<string|undefined> = writable('');
+export const claimRoleAllowed: Writable<Array<string>|undefined> = writable([]);
+export const claimRoleSelectable: Writable<Array<string>|undefined> = writable([]);
+// export const active_role: Writable<string|undefined> = writable('');
+
 nhost.auth.onAuthStateChanged(
     (event, session) => {
         console.log(`auth state changed. State is now ${event} with session: `, session);
         const jwt = session?.accessToken;
+
+		claimUserId.set(session?.user?.id); // auth.getClaim('x-hasura-user-id');
+		claimRole.set(session?.user?.defaultRole); //auth.getClaim('x-hasura-role');
+		claimRoleDefault.set(session?.user?.defaultRole); // auth.getClaim('x-hasura-default-role');
+		claimRoleAllowed.set(session?.user?.roles);  // auth.getClaim('x-hasura-allowed-roles');
+
+		// active_role.set(Cookie.get('active_role'));
+
         if (event === 'SIGNED_IN') {
             isSignedIn.set(true);
             user.set(session?.user);
@@ -31,6 +47,7 @@ nhost.auth.onAuthStateChanged(
         else {
             isSignedIn.set(false);
             user.set(null);
+            jwt_token.set('');
         }
     }
 );

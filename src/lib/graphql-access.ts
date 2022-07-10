@@ -314,3 +314,28 @@ export async function createGenealogy(genealogy: any, role: string, jwt_token: s
     return await gqlRequest(query, variables, jwt_token, addHeaders);
 }
 
+export async function delete_mookuauhau(mookuauhau_id: number|undefined, role: string, jwt_token: string) : Promise<any|undefined> {
+    console.log(`delete_mookuauhau(${mookuauhau_id}, role, jwt_token)`);
+
+    if(!mookuauhau_id) {
+        return undefined;
+    }
+
+    const query = gql`
+      mutation delete_mookuauhau($mookuauhau_id: Int!) {
+        delete_mookuauhau(where: {mookuauhau_id: {_eq: $mookuauhau_id}}) {
+          affected_rows
+        }
+      }
+    `;
+    const variables = {
+        mookuauhau_id: mookuauhau_id,
+    };
+
+    let addHeaders = {
+        "x-hasura-role": role
+    };
+
+    return await gqlRequest(query, variables, jwt_token, addHeaders);
+}
+

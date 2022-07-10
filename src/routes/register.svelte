@@ -26,9 +26,7 @@
 
 register
 
-<div style="color:red">
-    {message}
-</div>
+<div style="color:red">{message}</div>
 
 {#if $isSignedIn && $user}
     <div>you are signed in, {$user.displayName}</div>

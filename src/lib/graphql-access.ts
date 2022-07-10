@@ -248,3 +248,69 @@ export async function get_ohana_by_xrefid(xref_id: string|undefined, role: strin
     return await gqlRequest(query, variables, jwt_token, addHeaders);
 }
 
+export async function get_mookuauhau_list(role: string, jwt_token: string) : Promise<any|undefined> {
+    console.log(`get_mookuauhau_list(role, jwt_token)`);
+
+    const query = gql`
+      query getMookuauhauList {
+        mookuauhau {
+          mookuauhau_id
+          name
+          filename
+          owner_id
+          file_id
+          load_status
+          create_timestamp
+        }
+      }
+    `;
+    const variables = {
+    };
+
+    let addHeaders = {
+        "x-hasura-role": role
+    };
+
+    return await gqlRequest(query, variables, jwt_token, addHeaders);
+}
+
+export async function createGenealogy(genealogy: any, role: string, jwt_token: string) {
+    console.log("createGenealogy()");
+
+    // if (!jwt_token) {
+    //     return;
+    // }
+
+    let params: { [key: string]: any } = {
+        name: genealogy.name,
+        owner_id: genealogy.owner_id,
+    };
+
+    if (genealogy.file_id) { params.file_id = genealogy.file_id; }
+    if (genealogy.filename) { params.filename = genealogy.filename; }
+    if (genealogy.load_status) { params.load_status = genealogy.load_status; }
+
+    const query = gql`
+    mutation insertMookuauhau($object: mookuauhau_insert_input!) {
+        insert_mookuauhau_one(object: $object) {
+            mookuauhau_id
+            name
+            owner_id
+            filename
+            file_id
+            load_status
+            create_timestamp
+        }
+    }
+    `;
+    const variables = {
+        object: params,
+    };
+
+    let addHeaders = {
+        "x-hasura-role": role
+    };
+
+    return await gqlRequest(query, variables, jwt_token, addHeaders);
+}
+

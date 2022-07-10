@@ -16,6 +16,7 @@
 			<li><a href="/search">Search</a></li>
 			<li><a href="/login">Login</a></li>
 			<li><a href="/register">Register</a></li>
+			<li><a href="/upload">Upload</a></li>
 		</ul>
 	</section>
 </div>

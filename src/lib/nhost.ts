@@ -52,6 +52,16 @@ nhost.auth.onAuthStateChanged(
     }
 );
 
+nhost.auth.onTokenChanged((session) => {
+    console.log('auth.onTokenChanged() The access and refresh token has changed');
+    console.log("session: ", session);
+    const jwt = session?.accessToken;
+    if(jwt) {
+        jwt_token.set(session.accessToken);
+        console.log("set $jwt_token ", session.accessToken.substring(0,6) + '...');
+    }
+});
+
 export async function signIn(parameters) {
     // console.log("signIn(parameters): ", parameters);
 

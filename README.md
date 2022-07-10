@@ -10,11 +10,11 @@ Purpose of this project is to:
 # graphql data access
 
 see get_kanaka_relations_by_xrefid()
-[/src/lib/graphql-access.ts](https://github.com/nohea/demo-mookuauhau-browser/blob/main/src/lib/graphql-access.ts)
+[/src/lib/graphql-access.ts](../blob/main/src/lib/graphql-access.ts)
 
 # transformer from graphql result to force-graph { nodes: [], links: [] }
 
-[/src/lib/transforms.ts](https://github.com/nohea/demo-mookuauhau-browser/blob/main/src/lib/transforms.ts)
+[/src/lib/transforms.ts](../blob/main/src/lib/transforms.ts)
 
 # sample site on Vercel
 

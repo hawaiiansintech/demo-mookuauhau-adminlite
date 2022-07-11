@@ -1,5 +1,6 @@
 <script>
 	import LoginStatusBox from '$lib/components/LoginStatusBox.svelte';
+import Nav from '$lib/components/Nav.svelte';
 </script>
 
 
@@ -10,24 +11,8 @@
 	</main>
 </div>
 <div>
-	<section class="nav">
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/search">Search</a></li>
-			<li><a href="/login">Login</a></li>
-			<li><a href="/register">Register</a></li>
-			<li><a href="/upload">Upload</a></li>
-		</ul>
-	</section>
+	<Nav />
 </div>
 
 <LoginStatusBox />
 
-<style>
-    .nav {
-        border-style: dotted;
-        border-color: gray;
-        display: flex;
-        width:auto;
-    }
-</style>

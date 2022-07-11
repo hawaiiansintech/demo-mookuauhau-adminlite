@@ -18,8 +18,9 @@ import { isSignedIn, jwt_token, user } from "$lib/nhost";
 
 <style>
     .loginstatus {
-        border-style: dotted;
+        border-style: solid;
         border-color: gray;
+        border-width: 1px;
         display: flex;
         width: fit-content;
     }

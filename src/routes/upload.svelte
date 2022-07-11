@@ -100,22 +100,17 @@ import { createGenealogy } from '$lib/graphql-access';
 <GedcomFileList />
 
 <style>
-	#app{
-	display:flex;
-		align-items:center;
-		justify-content:center;
-		flex-flow:column;
+#app {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-flow:column;
 }
  
-	.upload{
-		display:flex;
-	height:50px;
-		width:50px;
-		cursor:pointer;
-	}
-	.avatar{
-		display:flex;
-		height:200px;
-		width:200px;
-	}
+.upload{
+    display:flex;
+    height:50px;
+    width:50px;
+    cursor:pointer;
+}
 </style>

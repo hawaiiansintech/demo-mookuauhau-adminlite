@@ -1,4 +1,3 @@
-
 # Demo Moʻokūʻauhau Browser
 
 Purpose of this project is to:
@@ -10,17 +9,17 @@ Purpose of this project is to:
 # graphql data access
 
 see get_kanaka_relations_by_xrefid()
-[/src/lib/graphql-access.ts](../blob/main/src/lib/graphql-access.ts)
+[/src/lib/graphql-access.ts](../main/src/lib/graphql-access.ts)
 
 # transformer from graphql result to force-graph { nodes: [], links: [] }
 
-[/src/lib/transforms.ts](../blob/main/src/lib/transforms.ts)
+[/src/lib/transforms.ts](../main/src/lib/transforms.ts)
 
 # sample site on Vercel
 
 [https://demo-mookuauhau-browser.vercel.app/](https://demo-mookuauhau-browser.vercel.app/)
 
-# typescript and javascript objects 
+# typescript and javascript objects
 
 FYI: i use one of these type definition to represent traditional javascipt objects w/o TS errors:
 
@@ -36,4 +35,3 @@ let params: { [key: string]: any } = {
 ```
 
 Don't hate me, i'm new to typescript 😅
-

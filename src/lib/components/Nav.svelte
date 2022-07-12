@@ -3,6 +3,7 @@
 	<div><a href="/search"> Search </a></div>
 	<div><a href="/login"> Login </a></div>
 	<div><a href="/register"> Register </a></div>
+	<div><a href="/profile"> Profile </a></div>
 	<div><a href="/upload"> Upload </a></div>
 </div>
 

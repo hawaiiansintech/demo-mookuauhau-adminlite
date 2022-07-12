@@ -106,7 +106,10 @@
 		<input type="submit" value="Submit/Upload" />
 	</form>
 {:else if $isSignedIn === false}
-	<div>please log in to upload files. The files need to be tied to a logged in user.</div>
+	<div>
+		please log in to upload files. The files need to be tied to a logged in user 
+		(unless you load using gedcomloader in <a href="https://github.com/hawaiiansintech/mookuauhau-backend">hawaiiansintech/mookuauhau-backend</a>).
+	</div>
 {:else}
 	<div>Page loading...</div>
 {/if}

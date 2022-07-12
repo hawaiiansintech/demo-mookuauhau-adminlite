@@ -24,7 +24,7 @@
 
 </script>
 
-register
+<h2>register</h2>
 
 <div style="color:red">{message}</div>
 
@@ -52,3 +52,9 @@ register
     <div>Page loading...</div>
 {/if}
 
+<style>
+	.form-label {
+		display: inline-block;
+		min-width: 6em;
+	}
+</style>

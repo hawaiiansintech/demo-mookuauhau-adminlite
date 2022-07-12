@@ -24,7 +24,7 @@
 
 </script>
 
-login
+<h2>login</h2>
 
 <div style="color:red">
     {loginMessage}
@@ -53,3 +53,9 @@ login
     <div>Page loading...</div>
 {/if}
 
+<style>
+	.form-label {
+		display: inline-block;
+		min-width: 6em;
+	}
+</style>

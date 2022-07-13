@@ -1,10 +1,11 @@
-# Demo Moʻokūʻauhau Browser
+# Demo Moʻokūʻauhau Admin Lite
 
 Purpose of this project is to:
 
 - Demonstration GraphQL queries
 - Transform GraphQL query results to a [force-graph](https://github.com/vasturiano/force-graph) node tree
-- optionally, demonstrate authentication/authorization code
+- Demonstrate authentication/authorization code
+- GEDCOM file uploader, for later backend processing.
 
 # graphql data access
 

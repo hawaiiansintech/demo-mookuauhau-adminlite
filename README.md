@@ -17,7 +17,7 @@ see get_kanaka_relations_by_xrefid()
 
 # sample site on Vercel
 
-[https://demo-mookuauhau-browser.vercel.app/](https://demo-mookuauhau-browser.vercel.app/)
+[https://demo-mookuauhau-adminlite.vercel.app/](https://demo-mookuauhau-adminlite.vercel.app/)
 
 # typescript and javascript objects
 

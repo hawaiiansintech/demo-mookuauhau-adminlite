@@ -1,6 +1,6 @@
 {
-	"name": "demo-mookuauhau-browser",
-	"version": "0.0.1",
+	"name": "demo-mookuauhau-adminlite",
+	"version": "0.1.2",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",

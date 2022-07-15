@@ -23,7 +23,7 @@
 		{#each mookuauhauList as m}
 			<label>
 				<input type="radio" bind:group={selectedId} name="mookuauhau" value={m.mookuauhau_id} />
-				{m.filename}
+				{m.name}
 				<!-- [load status: {m.load_status}] -->
 			</label>
 		{/each}

@@ -1,11 +1,10 @@
 <script>
 	import LoginStatusBox from '$lib/components/LoginStatusBox.svelte';
-import Nav from '$lib/components/Nav.svelte';
+	import Nav from '$lib/components/Nav.svelte';
 </script>
 
-
 <div>
-	<h1>Demo Moʻokūʻauhau Browser</h1>
+	<h1>Demo Moʻokūʻauhau Admin Lite</h1>
 	<main>
 		<slot />
 	</main>
@@ -15,4 +14,3 @@ import Nav from '$lib/components/Nav.svelte';
 </div>
 
 <LoginStatusBox />
-

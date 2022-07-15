@@ -41,7 +41,7 @@
 				// if fileupload works, also insert mookuauhau record with reference
 				if ($user && $user.id) {
 					const genealogy = {
-						name: data?.fileMetadata?.name,
+						name: submitData['name'] || data?.fileMetadata?.name,
 						owner_id: $user.id,
 						filename: data?.fileMetadata?.name,
 						file_id: data?.fileMetadata?.id,

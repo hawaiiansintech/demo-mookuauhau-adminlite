@@ -73,10 +73,12 @@
 	}
 </script>
 
+<h2>Test Browser</h2>
+
 <div>mookuauhau_id {mookuauhau_id}</div>
 <MookuauhauSelect bind:selectedId={mookuauhau_id} />
 
-<h2>Search by xref_id</h2>
+<h3>Search by xref_id</h3>
 
 <form method="get" on:submit|preventDefault={submitHandler}>
 	<div>
@@ -106,7 +108,7 @@
 
 <div style="color:red">{message}</div>
 
-<h2>Results [{resultMethod}]</h2>
+<h3>Results [{resultMethod}]</h3>
 {#if resultMethod === 'graphql-response'}
 	<JsonDumper jsonObject={graphqlResult} />
 {:else if resultMethod === 'force-graph-data'}

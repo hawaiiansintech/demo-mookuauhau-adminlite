@@ -59,7 +59,7 @@
 	}
 </script>
 
-<h1>GEDCOM file upload</h1>
+<h2>GEDCOM file upload</h2>
 
 <div>
 	Uploading a GEDCOM file will queue it for processing to a new Moʻokūʻauhau (family tree) dataset.
@@ -71,7 +71,7 @@
 	<div>you are signed in, {$user.displayName}</div>
 
 	<div id="app">
-		<h1>Upload GEDCOM File</h1>
+		<h3>Upload GEDCOM File</h3>
 	</div>
 	<form on:submit|preventDefault={uploadFormSubmit}>
 		<div class="form-item-wrapper">

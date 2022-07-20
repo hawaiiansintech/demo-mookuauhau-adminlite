@@ -11,79 +11,91 @@ export async function get_kanaka_relations_by_xrefid(mookuauhau_id: number|undef
     }
 
     const query = gql`
-      query kanakaByXrefidRelations($mookuauhau_id: Int!, $xref_id: String!) {
-        kanaka(where: {xref_id: {_eq: $xref_id}, mookuauhau_id: {_eq: $mookuauhau_id}}) {
-          kanaka_id
-          name
-          sex
-          residence
-          birth_date
-          birth_place
-          xref_id
-          mookuauhau_id
-          namakua {
-            ohana {
-              ohana_id
-              xref_id
-              kane_id
-              wahine_id
-              kane {
-                kanaka_id
-                xref_id
-                name
-              }
-              wahine {
-                kanaka_id
-                xref_id
-                name
-              }
-            }
-          }
-          makuakane {
-            ohana_id
+        query kanakaByXrefidRelations($mookuauhau_id: Int!, $xref_id: String!) {
+          kanaka(where: {xref_id: {_eq: $xref_id}, mookuauhau_id: {_eq: $mookuauhau_id}}) {
+            kanaka_id
+            name
+            sex
+            residence
             xref_id
-            kane_id
-            wahine {
-              kanaka_id
-              name
-              xref_id
-            }
-            nakamalii {
-              kamalii_id
+            mookuauhau_id
+            namakua {
               ohana {
                 ohana_id
                 xref_id
-              }
-              kanaka {
-                kanaka_id
-                name
-                xref_id
-                sex
+                kane_id
+                wahine_id
+                kane {
+                  kanaka_id
+                  xref_id
+                  name
+                }
+                wahine {
+                  kanaka_id
+                  xref_id
+                  name
+                }
+                residence
+                residence_place
               }
             }
-          }
-          makuahine {
-            ohana_id
-            xref_id
-            wahine_id
-            kane {
-              kanaka_id
-              name
+            makuakane {
+              ohana_id
               xref_id
-            }
-            nakamalii {
-              kamalii_id
-              kanaka {
+              kane_id
+              wahine {
                 kanaka_id
                 name
                 xref_id
-                sex
+              }
+              nakamalii {
+                kamalii_id
+                ohana {
+                  ohana_id
+                  xref_id
+                }
+                kanaka {
+                  kanaka_id
+                  name
+                  xref_id
+                  sex
+                }
               }
             }
+            makuahine {
+              ohana_id
+              xref_id
+              wahine_id
+              kane {
+                kanaka_id
+                name
+                xref_id
+              }
+              nakamalii {
+                kamalii_id
+                kanaka {
+                  kanaka_id
+                  name
+                  xref_id
+                  sex
+                }
+              }
+            }
+            birth_date
+            birth_date_dt
+            birth_place
+            death_date
+            death_date_dt
+            death_place
+            burial_place
+            formal_name
+            name_aka
+            name_surname
+            residence_place
+            source_uid
           }
         }
-      }
-    `;
+        `;
     const variables = {
         mookuauhau_id: mookuauhau_id,
         xref_id: xref_id,

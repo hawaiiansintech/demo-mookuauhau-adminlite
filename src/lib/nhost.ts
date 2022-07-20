@@ -4,6 +4,7 @@ import { NhostClient, type NhostClientConstructorParams } from "@nhost/nhost-js"
 import { writable, type Writable } from "svelte/store";
 
 export const VITE_NHOST_BACKEND_URL = import.meta.env.VITE_NHOST_BACKEND_URL as string;
+export const VITE_PROFILE_REDIRECTTO = import.meta.env.VITE_PROFILE_REDIRECTTO as string;
 
 export const config: NhostClientConstructorParams = {
     backendUrl: VITE_NHOST_BACKEND_URL,
@@ -68,14 +69,10 @@ export async function signIn(parameters) {
     let params = {
         email: parameters.email,
         password: parameters.password,
+        options: {
+            redirectTo: VITE_PROFILE_REDIRECTTO,
+        },
     };
-
-    if (parameters.email) {
-        params.email = parameters.email;
-    }
-    if (parameters.password) {
-        params.password = parameters.password;
-    }
 
     // TODO: sanitize inputs
 
@@ -92,14 +89,10 @@ export async function signUp(parameters) {
     let params = {
         email: parameters.email,
         password: parameters.password,
+        options: {
+            redirectTo: VITE_PROFILE_REDIRECTTO,
+        },
     };
-
-    if (parameters.email) {
-        params.email = parameters.email;
-    }
-    if (parameters.password) {
-        params.password = parameters.password;
-    }
 
     // TODO: sanitize inputs
 

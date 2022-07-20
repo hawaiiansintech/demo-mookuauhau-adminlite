@@ -254,9 +254,16 @@ function pushKanaka(nodeRelations, kanaka) {
 
     if(!nodeRelations.nodes.some(node => node.id === kanaka.xref_id)) {
         const { nodes, links } = nodeRelations;
+
+        // add more into node name, just to display more tooltip easily
+        let nodeName = kanaka?.name || 'kanaka';
+        if(kanaka?.birth_date) {
+            nodeName += "\n" + `[b. ${kanaka?.birth_date}]`;
+        }
+
         nodeRelations.nodes = [...nodes, {
             id: kanaka.xref_id,
-            name: kanaka?.name || 'kanaka',
+            name: nodeName,
             val: nodeValByType.kanaka,
             color: nodeColorByType.kanaka,
         }];
@@ -280,6 +287,16 @@ function pushOhana(nodeRelations, ohana) {
     // push ohana if not exists
     if(!nodeRelations.nodes.some(node => node.id === ohana.xref_id)) {
         const { nodes, links } = nodeRelations;
+
+        // add more into node name, just to display more tooltip easily
+        let nodeName = ohana?.name || 'ohana';
+        if(ohana?.marriage_date) {
+            nodeName += "\n" + `[m. ${ohana?.marriage_date}]`;
+        }
+        if(ohana?.marriage_place) {
+            nodeName += "\n" + `[@ ${ohana?.marriage_place}]`;
+        }
+
         nodeRelations.nodes = [...nodes, {
             id: ohana.xref_id,
             name: ohana?.name || 'ohana',

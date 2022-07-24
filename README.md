@@ -7,6 +7,17 @@ Purpose of this project is to:
 - Demonstrate authentication/authorization code
 - GEDCOM file uploader, for later backend processing.
 
+# get started
+
+```
+git clone https://github.com/hawaiiansintech/demo-mookuauhau-adminlite
+cd ./demo-mookuauhau-adminlite
+npm install
+cp .env.example .env  # edit to add required VITE_GRAPHQL_ENDPOINT & VITE_NHOST_BACKEND_URL
+
+npm run dev
+```
+
 # graphql data access
 
 see get_kanaka_relations_by_xrefid()

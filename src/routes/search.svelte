@@ -1,3 +1,15 @@
+<script lang="ts" context="module">
+	export async function load({ url, params, props, fetch, session, stuff, status, error }) {
+
+		const xref_id = url.searchParams.get('xref_id');
+
+		return {
+			props: {
+				xref_id,
+			}
+		}
+	}
+</script>
 <script lang="ts">
 	import ForceGraphVis from '$lib/components/ForceGraphVis.svelte';
 	import JsonDumper from '$lib/components/JsonDumper.svelte';
@@ -9,6 +21,9 @@
 		transformKanakaRelationsToForceGraph
 	} from '$lib/transforms';
 	import { get } from 'svelte/store';
+
+	export let xref_id: string;
+	$: searchText = xref_id || '@I654@';
 
 	let message = '';
 
@@ -83,7 +98,7 @@
 <form method="get" on:submit|preventDefault={submitHandler}>
 	<div>
 		<label for="searchText">search text</label>
-		<input type="text" name="searchText" value="@I654@" />
+		<input type="text" name="searchText" value={searchText} />
 	</div>
 
 	<div>

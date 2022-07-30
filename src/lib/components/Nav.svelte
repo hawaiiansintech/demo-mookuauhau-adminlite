@@ -5,6 +5,7 @@
 	<div><a href="/register"> Register </a></div>
 	<div><a href="/profile"> Profile </a></div>
 	<div><a href="/upload"> Upload </a></div>
+	<div><a href="/support"> Support Documentation </a></div>
 </div>
 
 <style>

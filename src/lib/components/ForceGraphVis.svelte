@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';

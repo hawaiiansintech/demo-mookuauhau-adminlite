@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { isSignedIn, nhost, signIn, user } from '$lib/nhost';
+	// import { isSignedIn, nhost, signIn, user } from '$lib/nhost';
 
-    let loginMessage = '';
+	let loginMessage = '';
 
-    async function loginFormSubmit(e) {
+	async function loginFormSubmit(e) {
 		console.log('loginFormSubmit()');
 		const formData = new FormData(e.target);
 		const submitData = {};
@@ -11,33 +11,31 @@
 			const [key, value] = field;
 			submitData[key] = value;
 		}
-		console.log("submitData: ", submitData);
+		console.log('submitData: ', submitData);
 		const data = await signIn(submitData);
 		console.log(data);
-        if(data.error) {
-            loginMessage = data.error.message;
-        }
-        else {
-            loginMessage = "login success";
-        }
+		if (data.error) {
+			loginMessage = data.error.message;
+		} else {
+			loginMessage = 'login success';
+		}
 	}
-
 </script>
 
 <h2>login</h2>
 
 <div style="color:red">
-    {loginMessage}
+	{loginMessage}
 </div>
 
-{#if $isSignedIn && $user}
-    <div>you are signed in, {$user.displayName}</div>
-    <div><a href="#signout" on:click={()=> nhost.auth.signOut()}>sign out</a></div>
+<!-- {#if $isSignedIn && $user}
+	<div>you are signed in, {$user.displayName}</div>
+	<div><a href="#signout" on:click={() => nhost.auth.signOut()}>sign out</a></div>
 {:else if $isSignedIn === false}
-    <div>please log in</div>
+	<div>please log in</div>
 
-    <form on:submit|preventDefault={loginFormSubmit}>
-        <div class="form-item-wrapper">
+	<form on:submit|preventDefault={loginFormSubmit}>
+		<div class="form-item-wrapper">
 			<label for="email" class="form-label">Email</label>
 			<input name="email" type="text" placeholder="Email" class="form-field" />
 		</div>
@@ -47,12 +45,10 @@
 		</div>
 
 		<input type="submit" value="Log In" />
-    </form>
-
+	</form>
 {:else}
-    <div>Page loading...</div>
-{/if}
-
+	<div>Page loading...</div>
+{/if} -->
 <style>
 	.form-label {
 		display: inline-block;

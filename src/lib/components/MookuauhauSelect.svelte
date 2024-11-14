@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { get_mookuauhau_list } from '$lib/graphql-access';
-	import { jwt_token } from '$lib/nhost';
+	// import { jwt_token } from '$lib/nhost';
 	import { onMount } from 'svelte';
 
 	// exported properties
@@ -9,7 +9,7 @@
 	let mookuauhauList: Array<any> = [];
 
 	onMount(async () => {
-		const data = await get_mookuauhau_list('user', $jwt_token);
+		const data = await get_mookuauhau_list('admin');
 		console.log('data: ', data);
 		mookuauhauList = data?.mookuauhau;
 

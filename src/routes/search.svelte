@@ -1,15 +1,15 @@
 <script lang="ts" context="module">
 	export async function load({ url, params, props, fetch, session, stuff, status, error }) {
-
 		const xref_id = url.searchParams.get('xref_id');
 
 		return {
 			props: {
-				xref_id,
+				xref_id
 			}
-		}
+		};
 	}
 </script>
+
 <script lang="ts">
 	import ForceGraphVis from '$lib/components/ForceGraphVis.svelte';
 	import JsonDumper from '$lib/components/JsonDumper.svelte';
@@ -58,6 +58,7 @@
 		if (jwt) {
 			role = 'user';
 		}
+		role = 'admin';
 
 		const xref_id = params?.searchText;
 
@@ -79,6 +80,7 @@
 		if (jwt) {
 			role = 'user';
 		}
+		role = 'admin';
 
 		const result = await get_kanaka_relations_by_xrefid(mookuauhau_id, xref_id, role, jwt);
 		graphqlResult = result;

@@ -1,15 +1,3 @@
-<script lang="ts" context="module">
-	export async function load({ url, params, props, fetch, session, stuff, status, error }) {
-		const xref_id = url.searchParams.get('xref_id');
-
-		return {
-			props: {
-				xref_id
-			}
-		};
-	}
-</script>
-
 <script lang="ts">
 	import ForceGraphVis from '$lib/components/ForceGraphVis.svelte';
 	import JsonDumper from '$lib/components/JsonDumper.svelte';
@@ -22,7 +10,10 @@
 	} from '$lib/transforms';
 	import { get } from 'svelte/store';
 
-	export let xref_id: string;
+	/** @type {import('./$types').PageData} */
+	export let data;
+	// export let xref_id: string;
+	const { xref_id } = data;
 	$: searchText = xref_id || '@I654@';
 
 	let message = '';
